@@ -1,0 +1,18 @@
+{
+  "name": "simplified-oshdb-api-programming",
+  "version": "0.1.0",
+  "description": "a simplified language for the oshdb api",
+  "scripts": {
+    "build": "npm run cleanup && mkdir dist && nearleyc soap-grammar/soap-grammar.ne -o dist/soap-grammar.js && cp soap-to-java/soap-to-java.js dist/",
+    "test": "npx mocha",
+    "cleanup": "rm -rf dist"
+  },
+  "author": "Franz-Benjamin Mocnik <mocnik@uni-heidelberg.de>",
+  "license": "MIT",
+  "dependencies": {
+    "nearley": "^2.13.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.1.1"
+  }
+}

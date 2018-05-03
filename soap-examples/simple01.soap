@@ -1,0 +1,3 @@
+osmTag("a")
+filter(x -> True)
+sum()
