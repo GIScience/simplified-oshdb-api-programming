@@ -1,0 +1,6 @@
+// last 2 months, daily //
+osmTag("highway", @typeOfStreet)
+osmTag("maxspeed")
+map(snapshot -> Geo.lengthOf(snapshot.getGeometry()))
+sum()
+lineageBy(average)

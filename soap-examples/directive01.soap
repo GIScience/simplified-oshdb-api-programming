@@ -1,0 +1,12 @@
+// snapshots //
+// contributions //
+// last 2 months, daily , test //
+// 2018-05-01 //
+// now //
+// last year, last 20 days, last month, last  year, last 3 years //
+// every day, every 2 days, every 20 days, every 200 days //
+osmTag("highway", @typeOfStreet)
+osmTag("maxspeed")
+// this is a comment /
+map(snapshot -> Geo.lengthOf(snapshot.getGeometry()))
+sum()

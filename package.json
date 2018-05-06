@@ -11,6 +11,7 @@
   "author": "Franz-Benjamin Mocnik <mocnik@uni-heidelberg.de>",
   "license": "MIT",
   "dependencies": {
+    "moo": "^0.4.3",
     "nearley": "^2.13.0"
   },
   "devDependencies": {
