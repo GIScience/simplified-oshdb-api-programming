@@ -1,7 +1,7 @@
 osmTag("highway", @typeOfStreet)
-osmTag("natural", @numberOf_String)
+osmTag("natural", @numberOf)
 map(snapshot -> @test_int * Geo.lengthOf(@k_int * snapshot.getGeometry()))
 sum()
 lineageBy(e -> {
-    return @n * f(e);
+    return @n_int * f(e);
 })

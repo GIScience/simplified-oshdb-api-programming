@@ -1,0 +1,9 @@
+ [ { "type": "soap-directive", "mapReducibleType": "OSMContribution" },
+ { "type": "import", "content": "abc.ghi" },
+ { "type": "emptyLine" },
+ { "type": "soap",
+   "command": "osmTag",
+   "content": [ { "type": "java", "content": "\"a\"" } ] },
+ { "type": "import", "content": "abc.def" },
+ { "type": "soap", "command": "sum", "content": [] } ]
+ 

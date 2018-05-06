@@ -1,4 +1,5 @@
-{ "mapReducibleType": "OSMEntitySnapshot",
+{ "imports": [],
+"mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": 60,
 "interval": 1,

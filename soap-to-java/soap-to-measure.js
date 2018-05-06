@@ -65,6 +65,7 @@ module.exports.soapToMeasure = s => {
   const result = {}
   
   // meta data
+  result.imports = filterAst(ast, 'import').map(a => a.content)
   result.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
   result.date = directive(ast, 'date')
   result.daysBefore = directive(ast, 'daysBefore')

@@ -39,7 +39,7 @@ const tokenizeJava = s => Array.from(mooJava.reset(s)).map(t => {
 
 main -> statementOrDirective:+ {% d => d[0].reduce((acc, val) => acc.concat(val), []) %}
 
-statementOrDirective -> (emptyLine | comment | directiveSOAP | statementSOAP | statementJAVA) {% d => d[0][0] %}
+statementOrDirective -> (emptyLine | comment | directiveSOAP | statementSOAP | importJAVA | statementJAVA) {% d => d[0][0] %}
 
 emptyLine -> _ "\n" {% () => ({type: 'emptyLine'}) %}
 
@@ -91,8 +91,11 @@ statementSOAPinner -> keyword "(" parentheses ")" {% d => ({type: 'soap', comman
 statementSOAPaggregateMethod -> keywordAggregate "(" aggregateMethod ")" {% d => [{type: 'soap-aggregate', command: d[0], method: d[2]}] %}
 statementSOAPaggregate -> keywordAggregate "(" parentheses ")" {% (d, l, reject) => (aggregateMethods.includes(d[2])) ? reject : [{type: 'soap-aggregate', command: d[0], content: tokenizeJava(d[2])}] %}
 
+importJAVA -> _ "import" [^\n]:+ ";" _ "\n" {% d => ({type: 'import', content: d[2].join('').trim()}) %}
+
 statementJAVA -> parentheses _ "\n" {% (d, l, reject) => {
   if (d[0] === '') return reject
+  if (d[0].trim().startsWith('import')) return reject
   if (d[0].match(/^\s*\/{2}.*/)) return reject
   for (const kw of keywords) if (d[0].match(new RegExp(`^ *${kw}\\(`))) return reject
   for (const kw of keywordsAggregate) if (d[0].match(new RegExp(`^ *${kw}\\(`))) return reject

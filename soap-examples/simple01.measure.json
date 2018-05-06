@@ -1,4 +1,5 @@
-{ "mapReducibleType": "OSMContribution",
+{ "imports": [],
+"mapReducibleType": "OSMContribution",
 "date": null,
 "daysBefore": 90,
 "interval": 1,
