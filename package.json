@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "a simplified language for the oshdb api",
   "scripts": {
-    "build": "npm run cleanup && mkdir dist && nearleyc soap-grammar/soap-grammar.ne -o dist/soap-grammar.js && cp soap-to-java/soap-to-java.js dist/",
+    "build": "npm run cleanup && mkdir dist && nearleyc soap-grammar/soap-grammar.ne -o dist/soap-grammar.js && cp soap-to-java/soap-to-measure.js dist/",
     "postinstall": "npm run build",
     "test": "npx mocha",
     "cleanup": "rm -rf dist"

@@ -39,7 +39,9 @@ const tokenizeJava = s => Array.from(mooJava.reset(s)).map(t => {
 
 main -> statementOrDirective:+ {% d => d[0].reduce((acc, val) => acc.concat(val), []) %}
 
-statementOrDirective -> (comment | directiveSOAP | statementSOAP | statementJAVA) {% d => d[0][0] %}
+statementOrDirective -> (emptyLine | comment | directiveSOAP | statementSOAP | statementJAVA) {% d => d[0][0] %}
+
+emptyLine -> _ "\n" {% () => ({type: 'emptyLine'}) %}
 
 comment -> _ "//" ([^\n]:*) "\n" {% (d, l, reject) => {
   if (d[2][0].join('').match(/[\/]{2}$/)) return reject
@@ -81,19 +83,20 @@ statementSOAP ->
   statementSOAPinner _ "\n" {% d => d[0] %}
   | statementSOAPreturn statementSOAPinner _ "\n" {% d => Object.assign(d[1], {return: d[0]}) %}
   | statementSOAPsave statementSOAPinner _ "\n" {% d => Object.assign(d[1], {defineType: d[0].type, defineVariable: d[0].variable}) %}
-  | statementSOAPinnerAggregateMethod _ "\n" {% d => d[0] %}
-  | statementSOAPinnerAggregate _ "\n" {% d => d[0] %}
-statementSOAPsave -> ([A-Z] [a-zA-Z0-9]:*) __ ([a-z] [a-zA-Z0-9]:*) _ "=" _ {% d => ({type: d[0][0] + d[0][1].join(''), variable: d[2][0] + d[2][1].join('')}) %}
+  | statementSOAPaggregateMethod _ "\n" {% d => d[0] %}
+  | statementSOAPaggregate _ "\n" {% d => d[0] %}
+statementSOAPsave -> _ ([a-zA-Z0-9]:+ " "):? _ ([a-z] [a-zA-Z0-9]:*) _ "=" _ {% d => ({type: (d[1]) ? d[1][0].join('') : null, variable: d[3][0] + d[3][1].join('')}) %}
 statementSOAPreturn -> "return" __ {% id %}
 statementSOAPinner -> keyword "(" parentheses ")" {% d => ({type: 'soap', command: d[0], content: tokenizeJava(d[2])}) %}
-statementSOAPinnerAggregateMethod -> keywordAggregate "(" aggregateMethod ")" {% d => [{type: 'soap-aggregate', command: d[0], method: d[2]}] %}
-statementSOAPinnerAggregate -> keywordAggregate "(" parentheses ")" {% (d, l, reject) => (aggregateMethods.includes(d[2])) ? reject : [{type: 'soap-aggregate', command: d[0], content: tokenizeJava(d[2])}] %}
+statementSOAPaggregateMethod -> keywordAggregate "(" aggregateMethod ")" {% d => [{type: 'soap-aggregate', command: d[0], method: d[2]}] %}
+statementSOAPaggregate -> keywordAggregate "(" parentheses ")" {% (d, l, reject) => (aggregateMethods.includes(d[2])) ? reject : [{type: 'soap-aggregate', command: d[0], content: tokenizeJava(d[2])}] %}
 
 statementJAVA -> parentheses _ "\n" {% (d, l, reject) => {
   if (d[0] === '') return reject
   if (d[0].match(/^\s*\/{2}.*/)) return reject
   for (const kw of keywords) if (d[0].match(new RegExp(`^ *${kw}\\(`))) return reject
   for (const kw of keywordsAggregate) if (d[0].match(new RegExp(`^ *${kw}\\(`))) return reject
+  if (d[0].match(/^ *[a-zA-Z0-9]* *([a-z][a-zA-Z0-9]*) *=/)) return reject
   return [{
     type: 'java',
     content: tokenizeJava(d[0]),
@@ -127,5 +130,5 @@ parenthesesInner ->
   | ([^(){}\"]:* {% d => d[0].join('') %}) "\"" [^\"]:* "\"" parenthesesInner {% d => [d[0], d[1], d[2].join(''), d[3], d[4]].join('') %}
   | [^(){}\"]:* {% d => d[0].join('') %}
 
-_ -> [\s]:* {% d => null %}
-__ -> [\s]:+ {% d => null %}
+_ -> [ ]:* {% d => null %}
+__ -> [ ]:+ {% d => null %}

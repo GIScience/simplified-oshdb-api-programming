@@ -1,10 +1,12 @@
-// last 2 months, daily //
+// contributions //
+// last 2 years //
 osmTag("highway", @typeOfStreet)
 osmTag("maxspeed")
 map(snapshot -> Geo.lengthOf(snapshot.getGeometry()))
 x = sum()
-x -= 3
+
+x -= 2;
 return x + 3;
-lineageBy(e -> {
-    return f(e);
-})
+
+lineageBy(e -> f(e, @hello_int))
+//lineageBy(min)

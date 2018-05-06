@@ -1,4 +1,0 @@
-osmTag("a")
-filter(x -> True)
-filter(x -> f(x))
-return sum()

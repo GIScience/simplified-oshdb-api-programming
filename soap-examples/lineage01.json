@@ -1,0 +1,21 @@
+[ { "type": "soap-directive", "daysBefore": 60 },
+{ "type": "soap-directive", "interval": 1 },
+{ "type": "soap",
+  "command": "osmTag",
+  "content":
+   [ { "type": "java", "content": "\"highway\", " },
+     { "type": "parameter",
+       "parameterName": "typeOfStreet",
+       "parameterType": "String" } ] },
+{ "type": "soap",
+  "command": "osmTag",
+  "content": [ { "type": "java", "content": "\"maxspeed\"" } ] },
+{ "type": "soap",
+  "command": "map",
+  "content":
+   [ { "type": "java",
+       "content": "snapshot -> Geo.lengthOf(snapshot.getGeometry())" } ] },
+{ "type": "soap", "command": "sum", "content": [] },
+{ "type": "soap-aggregate",
+  "command": "lineageBy",
+  "method": "average" } ]

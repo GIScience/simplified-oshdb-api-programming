@@ -4,26 +4,32 @@ const nearley = require('nearley')
 const path = require('path')
 
 const grammar = require('../dist/soap-grammar')
-const {soapToJava} = require('../soap-to-java/soap-to-java')
+const {soapToMeasure} = require('../soap-to-java/soap-to-measure')
 
 const pathExamples = 'soap-examples/'
 
 const parseToAst = s => new nearley.Parser(nearley.Grammar.fromCompiled(grammar)).feed(`${s.trim()}\n`).results[0]
 
+// console.log(soapToMeasure(fs.readFileSync(path.join(pathExamples, 'lineage02.soap'), 'utf-8')))
+
 describe('ast', () => {
   const filesJson = fs.readdirSync(pathExamples).filter(x => x.endsWith('.json')).map(x => x.slice(0, -5))
   for (const f of fs.readdirSync(pathExamples).filter(x => x.endsWith('.soap')).filter(x => filesJson.includes(x.slice(0, -5)))) {
     it(`test example file ${f}`, () => {
-      assert.deepEqual(parseToAst(fs.readFileSync(path.join(pathExamples, f), 'utf-8')), JSON.parse(fs.readFileSync(path.join(pathExamples, f.replace(/\.soap$/, '.json')), 'utf-8')))
+      const ast1 = parseToAst(fs.readFileSync(path.join(pathExamples, f), 'utf-8'))
+      const ast2 = JSON.parse(fs.readFileSync(path.join(pathExamples, f.replace(/\.soap$/, '.json')), 'utf-8'))
+      assert.deepEqual(ast1, ast2)
     })
   }
 })
 
-describe('soapToJava', () => {
-  const filesJava = fs.readdirSync(pathExamples).filter(x => x.endsWith('.java')).map(x => x.slice(0, -5))
-  for (const f of fs.readdirSync(pathExamples).filter(x => x.endsWith('.soap')).filter(x => filesJava.includes(x.slice(0, -5)))) {
+describe('soapToMeasure', () => {
+  const filesMeasure = fs.readdirSync(pathExamples).filter(x => x.endsWith('.measure.json')).map(x => x.slice(0, -13))
+  for (const f of fs.readdirSync(pathExamples).filter(x => x.endsWith('.soap')).filter(x => filesMeasure.includes(x.slice(0, -5)))) {
     it(`test example file ${f}`, () => {
-      assert.equal(soapToJava(fs.readFileSync(path.join(pathExamples, f), 'utf-8')).trim(), fs.readFileSync(path.join(pathExamples, f.replace(/\.soap$/, '.java')), 'utf-8').trim())
+      const measure1 = soapToMeasure(fs.readFileSync(path.join(pathExamples, f), 'utf-8'))
+      const measure2 = JSON.parse(fs.readFileSync(path.join(pathExamples, f.replace(/\.soap$/, '.measure.json')), 'utf-8'))
+      assert.deepEqual(measure1, measure2)
     })
   }
 })

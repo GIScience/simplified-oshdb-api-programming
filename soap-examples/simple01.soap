@@ -1,3 +1,5 @@
+// contributions //
+// daily, last 3 months //
 osmTag("a")
 filter(x -> True)
 sum()

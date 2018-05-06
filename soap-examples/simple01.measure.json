@@ -1,0 +1,6 @@
+{ "mapReducibleType": "OSMContribution",
+"date": null,
+"daysBefore": 90,
+"interval": 1,
+"refersToTimespan": true,
+"code": "MapAggregator<OSHDBCombinedIndex<GridCell, OSHDBTimestamp>, OSMContribution> ___mapReducer2 = ___mapReducer.aggregateByTimestamp(snapshot -> snapshot.getTimestamp());\n\nreturn Cast.result(\n___mapReducer2\n        .osmTag(\"a\")\n        .filter(x -> True)\n        .sum()\n);\n" }
