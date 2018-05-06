@@ -78,7 +78,7 @@ module.exports.soapToMeasureWithWarnings = s => {
   const [ast, measure] = soapToMeasure(s)
   if (measure.errors) return measure
   const warnings = []
-  warnings += ['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => `Warning: There are several SOAP directives for the parameter ${param}.`)
+  warnings += ['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => [null, `Warning: There are several SOAP directives for the parameter ${param}.`])
   return Object.assign(measure, {warnings: warnings})
 }
 
