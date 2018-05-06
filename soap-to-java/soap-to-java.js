@@ -5,9 +5,10 @@ const grammar = require('../dist/soap-grammar')
 
 const MAP_REDUCER = 'mapReducer'
 
-module.exports.soapToJava = (s) => {
-  const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar))
-  let ast = parser.feed(`${s}\n`).results[0]
+const parseToAst = s => new nearley.Parser(nearley.Grammar.fromCompiled(grammar)).feed(`${s.trim()}\n`).results[0]
+
+module.exports.soapToJava = s => {
+  let ast = parseToAst(s)
   
   // check for definition statement
   let ast2 = []
