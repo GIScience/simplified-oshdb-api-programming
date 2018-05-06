@@ -61,7 +61,6 @@ const resultErrors = es => ({errors: es})
 
 module.exports.soapToMeasure = s => {
   let ast = parseToAst(s)
-  const errors = []
   const result = {}
   
   // meta data
