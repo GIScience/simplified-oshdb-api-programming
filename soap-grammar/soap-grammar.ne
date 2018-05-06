@@ -74,7 +74,7 @@ directiveSOAPinner -> [^,\n]:+ {% (d, l, reject) => {
   if (match) return {interval: parseInt(match[1]) * 30}
   match = (/every +([0-9]+) +years?/.exec(s))
   if (match) return {interval: parseInt(match[1]) * 360}
-  return {command: s}
+  return {unknown: s}
 } %}
 
 statementSOAP ->
@@ -90,6 +90,7 @@ statementSOAPinnerAggregateMethod -> keywordAggregate "(" aggregateMethod ")" {%
 statementSOAPinnerAggregate -> keywordAggregate "(" parentheses ")" {% (d, l, reject) => (aggregateMethods.includes(d[2])) ? reject : [{type: 'soap-aggregate', command: d[0], content: tokenizeJava(d[2])}] %}
 
 statementJAVA -> parentheses _ "\n" {% (d, l, reject) => {
+  if (d[0] === '') return reject
   if (d[0].match(/^\s*\/{2}.*/)) return reject
   for (const kw of keywords) if (d[0].match(new RegExp(`^ *${kw}\\(`))) return reject
   for (const kw of keywordsAggregate) if (d[0].match(new RegExp(`^ *${kw}\\(`))) return reject
