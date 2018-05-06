@@ -10,7 +10,19 @@ const INDEX_MAP = (m, f) => `Index.map(\n      ${m},\n      ${f}\n    )`
 
 // PARSE
 
-const parseToAst = s => new nearley.Parser(nearley.Grammar.fromCompiled(grammar)).feed(`${s.trim()}\n`).results[0]
+const parseToAst = s => {
+  const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar))
+  let lineNumber = 0
+  try {
+    for (const line of s.trim().split('\n')) {
+      lineNumber++
+      parser.feed(`${line}\n`)
+    }
+  } catch (e) {
+    return [null, [lineNumber, e.toString()]]
+  }
+  return [parser.results[0], null]
+}
 
 // HELPING FUNCTIONS
 
@@ -39,16 +51,16 @@ const soapAll = ast => {
 const soapDefine = ast => {
   let define = null
   for (const a of filterAst(ast, 'soap')) if (a.defineVariable) {
-    if (define !== null) return [null, ['Too many assignments (x = ...) in the SOAP statements.  Please use only one assignment at maximum.']]
+    if (define !== null) return [null, [null, 'Too many assignments (x = ...) in the SOAP statements.  Please use only one assignment at maximum.']]
     define = a
   }
-  if (define === null) return [null, ['No assignment (x = ...) found.']]
+  if (define === null) return [null, [null, 'No assignment (x = ...) found.']]
   return [define, null]
 }
 
 const soapAggregate = ast => {
   let aggregate = filterAst(ast, 'soap-aggregate')
-  if (aggregate.length > 1) return [null, ['Too many SOAP aggregation statements.  Please use only one SOAP aggregation statement at maximum.']]
+  if (aggregate.length > 1) return [null, [null, 'Too many SOAP aggregation statements.  Please use only one SOAP aggregation statement at maximum.']]
   if (aggregate.length == 0) return [null, null]
   return [aggregate[0], null]
 }
@@ -60,9 +72,12 @@ const resultErrors = es => ({errors: es})
 // EXPORT FUNCTION
 
 module.exports.soapToMeasure = s => {
-  let ast = parseToAst(s)
   const result = {}
-  
+
+  // parse
+  const [ast, es] = parseToAst(s)
+  if (es) return resultErrors(es)
+
   // meta data
   result.imports = filterAst(ast, 'import').map(a => a.content)
   result.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
@@ -70,7 +85,7 @@ module.exports.soapToMeasure = s => {
   result.daysBefore = directive(ast, 'daysBefore')
   result.intervalInDays = directive(ast, 'interval')
   result.refersToTimespan = (result.date !== null || result.daysBefore !== null || result.intervalInDays !== null)
-  
+
   // produce code
   let code = soapAll(ast)
   const range = javaAll(ast)
@@ -80,8 +95,8 @@ module.exports.soapToMeasure = s => {
     const domain = (define.defineType !== null) ? `(${define.defineType} ${define.defineVariable})` : define.defineVariable
     code = INDEX_MAP(code, `${domain} -> {\n        ${range}\n      }`)
   }
-  const [aggregate, es] = soapAggregate(ast)
-  if (es) return resultErrors(es)
+  const [aggregate, esAggregate] = soapAggregate(ast)
+  if (esAggregate) return resultErrors(esAggregate)
   if (aggregate !== null) {
     const aggregateFunction = (aggregate.method) ? `Lineage::${aggregate.method}` : aggregate.content.map(contentToJava).join('')
     code = INDEX_REDUCE(code, aggregateFunction)
@@ -89,6 +104,6 @@ module.exports.soapToMeasure = s => {
   code = CAST_RESULT(code)
   code = AGGREGATE_BY_TIMESTAMP(result.refersToTimespan, result.mapReducibleType) + '\n\n' + code
   result.code = code
-  
+
   return result
 }
