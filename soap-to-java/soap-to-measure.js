@@ -68,8 +68,8 @@ module.exports.soapToMeasure = s => {
   result.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
   result.date = directive(ast, 'date')
   result.daysBefore = directive(ast, 'daysBefore')
-  result.interval = directive(ast, 'interval')
-  result.refersToTimespan = (result.date !== null || result.daysBefore !== null || result.interval !== null)
+  result.intervalInDays = directive(ast, 'interval')
+  result.refersToTimespan = (result.date !== null || result.daysBefore !== null || result.intervalInDays !== null)
   
   // produce code
   let code = soapAll(ast)

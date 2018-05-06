@@ -2,6 +2,6 @@
 "mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": 60,
-"interval": 1,
+"intervalInDays": 1,
 "refersToTimespan": true,
 "code": "MapAggregator<OSHDBCombinedIndex<GridCell, OSHDBTimestamp>, OSMEntitySnapshot> ___mapReducer2 = ___mapReducer.aggregateByTimestamp(snapshot -> snapshot.getTimestamp());\n\nreturn Cast.result(\n  Index.reduce(\n    Index.map(\n      ___mapReducer2\n        .osmTag(\"highway\", ___p.get(\"typeOfStreet\").toString())\n        .osmTag(\"maxspeed\")\n        .map(snapshot -> Geo.lengthOf(snapshot.getGeometry()))\n        .sum(),\n      x -> {\n        x -= 3\n        return x + 3;\n      }\n    ),\n    e -> {\n    return f(e);\n}\n  )\n);\n" }

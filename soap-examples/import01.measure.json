@@ -2,6 +2,6 @@
 "mapReducibleType": "OSMContribution",
 "date": null,
 "daysBefore": null,
-"interval": null,
+"intervalInDays": null,
 "refersToTimespan": false,
 "code": "MapAggregator<GridCell, OSMContribution> ___mapReducer2 = ___mapReducer;\n\nreturn Cast.result(\n___mapReducer2\n        .osmTag(\"a\")\n        .sum()\n);\n" }
