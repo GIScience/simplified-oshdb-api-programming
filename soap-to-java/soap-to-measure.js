@@ -21,7 +21,7 @@ const parseToAst = s => {
   } catch (e) {
     return [null, [lineNumber, e.toString()]]
   }
-  if (parser.results[0] === null || parser.results[0] === undefined) return [null, [null, 'Unknown parser error']]
+  if (parser.results[0] === null || parser.results[0] === undefined) return [null, [[null, 'Unknown parser error']]]
   return [parser.results[0], null]
 }
 
@@ -52,16 +52,16 @@ const soapAll = ast => {
 const soapDefine = ast => {
   let define = null
   for (const a of filterAst(ast, 'soap')) if (a.defineVariable) {
-    if (define !== null) return [null, [null, 'Too many assignments (x = ...) in the SOAP statements.  Please use only one assignment at maximum.']]
+    if (define !== null) return [null, [[null, 'Too many assignments (x = ...) in the SOAP statements.  Please use only one assignment at maximum.']]]
     define = a
   }
-  if (define === null) return [null, [null, 'No assignment (x = ...) found.']]
+  if (define === null) return [null, [[null, 'No assignment (x = ...) found.']]]
   return [define, null]
 }
 
 const soapAggregate = ast => {
   let aggregate = filterAst(ast, 'soap-aggregate')
-  if (aggregate.length > 1) return [null, [null, 'Too many SOAP aggregation statements.  Please use only one SOAP aggregation statement at maximum.']]
+  if (aggregate.length > 1) return [null, [[null, 'Too many SOAP aggregation statements.  Please use only one SOAP aggregation statement at maximum.']]]
   if (aggregate.length == 0) return [null, null]
   return [aggregate[0], null]
 }
