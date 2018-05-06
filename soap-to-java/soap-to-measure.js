@@ -74,12 +74,12 @@ const resultErrors = es => ({errors: es})
 
 // EXPORT FUNCTION
 
-module.exports.soapToWarnings = s => {
-  const [ast, measure] = soapToMeasures(s)
+module.exports.soapToMeasureWithWarnings = s => {
+  const [ast, measure] = soapToMeasure(s)
   if (measure.errors) return measure
   const warnings = []
   warnings += ['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => `Warning: There are several SOAP directives for the parameter ${param}.`)
-  return {errors: warnings}
+  return Object.assign(measure, {warnings: warnings})
 }
 
 module.exports.soapToMeasure = s => soapToMeasure(s)[1]
