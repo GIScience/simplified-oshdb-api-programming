@@ -19,7 +19,7 @@ const parseToAst = s => {
       parser.feed(`${line}\n`)
     }
   } catch (e) {
-    return [null, [lineNumber, e.toString()]]
+    return [null, [[lineNumber, e.toString()]]]
   }
   if (parser.results[0] === null || parser.results[0] === undefined) return [null, [[null, 'Unknown parser error']]]
   return [parser.results[0], null]
