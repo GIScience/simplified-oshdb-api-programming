@@ -21,7 +21,7 @@ const parseToAst = s => {
   } catch (e) {
     return [null, [[lineNumber, e.toString()]]]
   }
-  if (parser.results[0] === null || parser.results[0] === undefined) return [null, [[null, 'Unknown parser error']]]
+  if (parser.results[0] === null || parser.results[0] === undefined) return [null, [[null, 'Error: Unknown parser error']]]
   return [parser.results[0], null]
 }
 
@@ -52,32 +52,44 @@ const soapAll = ast => {
 const soapDefine = ast => {
   let define = null
   for (const a of filterAst(ast, 'soap')) if (a.defineVariable) {
-    if (define !== null) return [null, [[null, 'Too many assignments (x = ...) in the SOAP statements.  Please use only one assignment at maximum.']]]
+    if (define !== null) return [null, [[null, 'Error: Too many assignments (x = ...) in the SOAP statements.  Please use only one assignment at maximum.']]]
     define = a
   }
-  if (define === null) return [null, [[null, 'No assignment (x = ...) found.']]]
+  if (define === null) return [null, [[null, 'Error: No assignment (x = ...) found.']]]
   return [define, null]
 }
 
 const soapAggregate = ast => {
   let aggregate = filterAst(ast, 'soap-aggregate')
-  if (aggregate.length > 1) return [null, [[null, 'Too many SOAP aggregation statements.  Please use only one SOAP aggregation statement at maximum.']]]
+  if (aggregate.length > 1) return [null, [[null, 'Error: Too many SOAP aggregation statements.  Please use only one SOAP aggregation statement at maximum.']]]
   if (aggregate.length == 0) return [null, null]
   return [aggregate[0], null]
 }
 
 const javaAll = ast => filterAst(ast, 'java').map(a => a.content.map(contentToJava).join('')).join('\n        ')
 
+const checkDoubleDirective = (ast, param) => filterAst(ast, 'soap-directive').filter(sd => sd[param] != undefined).length > 1
+
 const resultErrors = es => ({errors: es})
 
 // EXPORT FUNCTION
 
-module.exports.soapToMeasure = s => {
+module.exports.soapToWarnings = s => {
+  const [ast, measure] = soapToMeasures(s)
+  if (measure.errors) return measure
+  const warnings = []
+  warnings += ['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => `Warning: There are several SOAP directives for the parameter ${param}.`)
+  return {errors: warnings}
+}
+
+module.exports.soapToMeasure = s => soapToMeasure(s)[1]
+
+const soapToMeasure = s => {
   const result = {}
 
   // parse
   const [ast, es] = parseToAst(s)
-  if (es) return resultErrors(es)
+  if (es) return [ast, resultErrors(es)]
 
   // meta data
   result.imports = filterAst(ast, 'import').map(a => a.content)
@@ -92,12 +104,12 @@ module.exports.soapToMeasure = s => {
   const range = javaAll(ast)
   if (filterAst(ast, 'java') && range !== '') {
     const [define, es] = soapDefine(ast)
-    if (es) return resultErrors(es)
+    if (es) return [ast, resultErrors(es)]
     const domain = (define.defineType !== null) ? `(${define.defineType} ${define.defineVariable})` : define.defineVariable
     code = INDEX_MAP(code, `${domain} -> {\n        ${range}\n      }`)
   }
   const [aggregate, esAggregate] = soapAggregate(ast)
-  if (esAggregate) return resultErrors(esAggregate)
+  if (esAggregate) return [ast, resultErrors(esAggregate)]
   if (aggregate !== null) {
     const aggregateFunction = (aggregate.method) ? `Lineage::${aggregate.method}` : aggregate.content.map(contentToJava).join('')
     code = INDEX_REDUCE(code, aggregateFunction)
@@ -106,5 +118,5 @@ module.exports.soapToMeasure = s => {
   code = AGGREGATE_BY_TIMESTAMP(result.refersToTimespan, result.mapReducibleType) + '\n\n' + code
   result.code = code
 
-  return result
+  return [ast, result]
 }
