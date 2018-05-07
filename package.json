@@ -3,18 +3,22 @@
   "version": "0.1.0",
   "description": "a simplified language for the oshdb api",
   "scripts": {
-    "build": "npm run cleanup && mkdir dist && nearleyc soap-grammar/soap-grammar.ne -o dist/soap-grammar.js && cp soap-to-java/soap-to-measure.js dist/",
+    "build": "npm run cleanup && mkdir build && mkdir dist && nearleyc soap-grammar/soap-grammar.ne -o build/soap-grammar.js && cp soap-to-java/soap-to-measure.js build/ && babel --presets babel-preset-es2015 --out-dir dist/ build/",
+    "cleanup": "rm -rf dist && rm -rf build",
+    "prepublish": "npm run build",
     "postinstall": "npm run build",
-    "test": "npx mocha",
-    "cleanup": "rm -rf dist"
+    "test": "npx mocha"
   },
   "author": "Franz-Benjamin Mocnik <mocnik@uni-heidelberg.de>",
   "license": "MIT",
+  "main": "index.js",
   "dependencies": {
     "moo": "^0.4.3",
     "nearley": "^2.13.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "mocha": "^5.1.1"
   }
 }
