@@ -77,7 +77,8 @@ const resultErrors = es => ({errors: es, warnings: []})
 module.exports.soapToMeasureWithWarnings = s => {
   const [ast, measure] = soapToMeasure(s)
   if (measure.errors.length) return measure
-  measure.warnings = measure.warnings.concat(['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => [null, `Warning: There are several SOAP directives for the parameter ${param}.`]))
+  measure.warnings = measure.warnings.concat(['mapReducibleType', 'date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => [null, `Warning: There are several SOAP directives for the parameter ${param}.`]))
+  measure.warnings = measure.warnings.concat(filterAst(ast, 'soap-directive').filter(sd => sd.unknown !== undefined).map(sd => [null, `Warning: The SOAP directive "${sd.unknown}" is unknown.`]))
   return measure
 }
 
@@ -98,7 +99,7 @@ const soapToMeasure = s => {
   measure.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
   measure.date = directive(ast, 'date')
   measure.daysBefore = directive(ast, 'daysBefore')
-  measure.intervalInDays = directive(ast, 'interval')
+  measure.intervalInDays = directive(ast, 'intervalInDays')
   measure.refersToTimespan = (measure.date !== null || measure.daysBefore !== null || measure.intervalInDays !== null)
 
   // produce code

@@ -66,16 +66,18 @@ directiveSOAPinner -> [^,\n]:+ {% (d, l, reject) => {
   if (match) return {daysBefore: parseInt(match[1]) * 30}
   match = (/last +([0-9]+) +years?/.exec(s))
   if (match) return {daysBefore: parseInt(match[1]) * 360}
-  if (s == 'daily') return {interval: 1}
-  if (s == 'monthly') return {interval: 30}
-  if (s == 'yearly') return {interval: 360}
-  if (s.match(/every +day/)) return {interval: 1}
+  if (s == 'daily') return {intervalInDays: 1}
+  if (s == 'monthly') return {intervalInDays: 30}
+  if (s == 'yearly') return {intervalInDays: 360}
+  if (s.match(/every +day/)) return {intervalInDays: 1}
+  if (s.match(/every +month/)) return {intervalInDays: 30}
+  if (s.match(/every +year/)) return {intervalInDays: 360}
   match = (/every +([0-9]+) +days?/.exec(s))
-  if (match) return {interval: parseInt(match[1])}
+  if (match) return {intervalInDays: parseInt(match[1])}
   match = (/every +([0-9]+) +months?/.exec(s))
-  if (match) return {interval: parseInt(match[1]) * 30}
+  if (match) return {intervalInDays: parseInt(match[1]) * 30}
   match = (/every +([0-9]+) +years?/.exec(s))
-  if (match) return {interval: parseInt(match[1]) * 360}
+  if (match) return {intervalInDays: parseInt(match[1]) * 360}
   return {unknown: s}
 } %}
 

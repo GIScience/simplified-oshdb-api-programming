@@ -1,5 +1,5 @@
 [ { "type": "soap-directive", "daysBefore": 60 },
-{ "type": "soap-directive", "interval": 1 },
+{ "type": "soap-directive", "intervalInDays": 1 },
 { "type": "soap",
   "command": "osmTag",
   "content":
