@@ -68,36 +68,38 @@ const soapAggregate = ast => {
 
 const javaAll = ast => filterAst(ast, 'java').map(a => a.content.map(contentToJava).join('')).join('\n        ')
 
-const checkDoubleDirective = (ast, param) => filterAst(ast, 'soap-directive').filter(sd => sd[param] != undefined).length > 1
+const checkDoubleDirective = (ast, param) => filterAst(ast, 'soap-directive').filter(sd => sd[param] !== undefined).length > 1
 
-const resultErrors = es => ({errors: es})
+const resultErrors = es => ({errors: es, warnings: []})
 
 // EXPORT FUNCTION
 
 module.exports.soapToMeasureWithWarnings = s => {
   const [ast, measure] = soapToMeasure(s)
-  if (measure.errors) return measure
-  let warnings = []
-  warnings = warnings.concat(['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => [null, `Warning: There are several SOAP directives for the parameter ${param}.`]))
-  return Object.assign(measure, {warnings: warnings})
+  if (measure.errors.length) return measure
+  measure.warnings = measure.warnings.concat(['date', 'daysBefore', 'intervalInDays', 'refersToTimespan'].filter(param => checkDoubleDirective(ast, param)).map(param => [null, `Warning: There are several SOAP directives for the parameter ${param}.`]))
+  return measure
 }
 
 module.exports.soapToMeasure = s => soapToMeasure(s)[1]
 
 const soapToMeasure = s => {
-  const result = {}
+  const measure = {
+    errors: [],
+    warnings: [],
+  }
 
   // parse
   const [ast, es] = parseToAst(s)
   if (es) return [ast, resultErrors(es)]
 
   // meta data
-  result.imports = filterAst(ast, 'import').map(a => a.content)
-  result.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
-  result.date = directive(ast, 'date')
-  result.daysBefore = directive(ast, 'daysBefore')
-  result.intervalInDays = directive(ast, 'interval')
-  result.refersToTimespan = (result.date !== null || result.daysBefore !== null || result.intervalInDays !== null)
+  measure.imports = filterAst(ast, 'import').map(a => a.content)
+  measure.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
+  measure.date = directive(ast, 'date')
+  measure.daysBefore = directive(ast, 'daysBefore')
+  measure.intervalInDays = directive(ast, 'interval')
+  measure.refersToTimespan = (measure.date !== null || measure.daysBefore !== null || measure.intervalInDays !== null)
 
   // produce code
   let code = soapAll(ast)
@@ -115,8 +117,8 @@ const soapToMeasure = s => {
     code = INDEX_REDUCE(code, aggregateFunction)
   }
   code = CAST_RESULT(code)
-  code = AGGREGATE_BY_TIMESTAMP(result.refersToTimespan, result.mapReducibleType) + '\n\n' + code
-  result.code = code
+  code = AGGREGATE_BY_TIMESTAMP(measure.refersToTimespan, measure.mapReducibleType) + '\n\n' + code
+  measure.code = code
 
-  return [ast, result]
+  return [ast, measure]
 }
