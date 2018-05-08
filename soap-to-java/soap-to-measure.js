@@ -100,7 +100,7 @@ const soapToMeasure = s => {
   measure.date = directive(ast, 'date')
   measure.daysBefore = directive(ast, 'daysBefore')
   measure.intervalInDays = directive(ast, 'intervalInDays')
-  measure.refersToTimespan = (measure.date !== null || measure.daysBefore !== null || measure.intervalInDays !== null)
+  measure.refersToTimespan = (measure.daysBefore !== null || measure.intervalInDays !== null)
 
   // produce code
   let code = soapAll(ast)
