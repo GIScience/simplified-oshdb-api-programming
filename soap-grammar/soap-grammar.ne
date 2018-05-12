@@ -6,7 +6,7 @@ const keywords = ['areaOfInterest', 'timestamps', 'osmType', 'osmEntityFilter', 
 
 const keywordsAggregate = ['lineageBy']
 
-const aggregateMethods = ['min', 'max', 'average', 'saturation']
+const aggregateMethods = ['min', 'max', 'sum', 'average', 'saturation']
 
 const mooJava = moo.compile({
   java: {match: /[^@]+/, lineBreaks: true},
