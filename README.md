@@ -2,7 +2,7 @@
 
 This software parses SOAP code and converts it to JAVA code, which is to be consumed by the [OpenStreetMap History Database (OSHDB)](???).
 
-## Install
+## Installation
 
 To install this software, please run
 
