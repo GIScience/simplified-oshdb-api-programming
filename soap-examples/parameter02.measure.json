@@ -3,8 +3,11 @@
 "imports": [],
 "soapImports": [],
 "parameter":
- { "typeOfStreet": { "type": "String", "defaultValue": "tertiary" },
-   "numberOf": { "type": "Integer", "defaultValue": "3" } },
+ { "typeOfStreet":
+    { "name": "typeOfStreet",
+      "type": "String",
+      "defaultValue": "tertiary" },
+   "numberOf": { "name": "numberOf", "type": "Integer", "defaultValue": "3" } },
 "mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": null,

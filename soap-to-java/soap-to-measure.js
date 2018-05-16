@@ -99,7 +99,10 @@ const soapToMeasure = s => {
   measure.soapImports = filterAst(ast, 'soap-directive').filter(a => a.import).map(a => a.import)
   measure.parameter = {}
   ast.filter(a => a.content).filter(a => Array.isArray(a.content)).map(a => a.content.filter(c => c.type === 'parameter').map(c => {
-    measure.parameter[c.parameterName] = {type: c.parameterType}
+    measure.parameter[c.parameterName] = {
+      name: c.parameterName,
+      type: c.parameterType,
+    }
   }))
   filterAst(ast, 'soap-directive').filter(a => a.parameterName).filter(a => measure.parameter[a.parameterName] !== undefined).map(a => {
     measure.parameter[a.parameterName].defaultValue = a.defaultValue
