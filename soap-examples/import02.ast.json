@@ -1,0 +1,6 @@
+[ { "type": "soap-directive", "import": "user/measure" },
+{ "type": "emptyLine" },
+{ "type": "soap",
+  "command": "osmTag",
+  "content": [ { "type": "java", "content": "\"natural\"" } ] },
+{ "type": "soap", "command": "sum", "content": [] } ]

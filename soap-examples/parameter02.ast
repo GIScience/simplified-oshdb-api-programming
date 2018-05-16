@@ -1,0 +1,21 @@
+[ { "type": "soap-directive",
+  "parameterName": "typeOfStreet",
+  "defaultValue": "tertiary" },
+{ "type": "soap-directive",
+  "parameterName": "numberOf",
+  "defaultValue": "3" },
+{ "type": "soap",
+  "command": "osmTag",
+  "content":
+   [ { "type": "java", "content": "\"highway\", " },
+     { "type": "parameter",
+       "parameterName": "typeOfStreet",
+       "parameterType": "String" } ] },
+{ "type": "soap",
+  "command": "osmTag",
+  "content":
+   [ { "type": "java", "content": "\"natural\", " },
+     { "type": "parameter",
+       "parameterName": "numberOf",
+       "parameterType": "Integer" } ] },
+{ "type": "soap", "command": "sum", "content": [] } ]

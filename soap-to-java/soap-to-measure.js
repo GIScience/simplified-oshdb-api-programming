@@ -43,7 +43,7 @@ const directive = (ast, param, defaultValue=null) => {
   return defaultValue
 }
 
-const soapAll = ast => {
+const soapMapReducer = ast => {
   let soap = ''
   for (const a of filterAst(ast, 'soap')) soap += `\n        .${a.command}(${a.content.map(contentToJava).join('')})`
   return `${MAP_REDUCER_INNER}${soap}`
@@ -96,6 +96,14 @@ const soapToMeasure = s => {
 
   // meta data
   measure.imports = filterAst(ast, 'import').map(a => a.content)
+  measure.soapImports = filterAst(ast, 'soap-directive').filter(a => a.import).map(a => a.import)
+  measure.parameter = {}
+  ast.filter(a => a.content).filter(a => Array.isArray(a.content)).map(a => a.content.filter(c => c.type === 'parameter').map(c => {
+    measure.parameter[c.parameterName] = {type: c.parameterType}
+  }))
+  filterAst(ast, 'soap-directive').filter(a => a.parameterName).filter(a => measure.parameter[a.parameterName] !== undefined).map(a => {
+    measure.parameter[a.parameterName].defaultValue = a.defaultValue
+  })
   measure.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
   measure.date = directive(ast, 'date')
   measure.daysBefore = directive(ast, 'daysBefore')
@@ -103,7 +111,7 @@ const soapToMeasure = s => {
   measure.refersToTimespan = (measure.daysBefore !== null || measure.intervalInDays !== null)
 
   // produce code
-  let code = soapAll(ast)
+  let code = soapMapReducer(ast)
   const range = javaAll(ast)
   if (filterAst(ast, 'java') && range !== '') {
     const [define, es] = soapDefine(ast)

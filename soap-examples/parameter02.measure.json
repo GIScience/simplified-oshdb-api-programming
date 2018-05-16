@@ -1,0 +1,13 @@
+{ "errors": [],
+"warnings": [],
+"imports": [],
+"soapImports": [],
+"parameter":
+ { "typeOfStreet": { "type": "String", "defaultValue": "tertiary" },
+   "numberOf": { "type": "Integer", "defaultValue": "3" } },
+"mapReducibleType": "OSMEntitySnapshot",
+"date": null,
+"daysBefore": null,
+"intervalInDays": null,
+"refersToTimespan": false,
+"code": "MapAggregator<GridCell, OSMEntitySnapshot> ___mapReducer2 = ___mapReducer;\n\nreturn Cast.result(\n___mapReducer2\n        .osmTag(\"highway\", ___p.get(\"typeOfStreet\").toString())\n        .osmTag(\"natural\", ___p.get(\"numberOf\").toInteger())\n        .sum()\n);\n" }

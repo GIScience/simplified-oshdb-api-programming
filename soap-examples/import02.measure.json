@@ -1,0 +1,11 @@
+{ "errors": [],
+"warnings": [],
+"imports": [],
+"soapImports": [ "user/measure" ],
+"parameter": [],
+"mapReducibleType": "OSMEntitySnapshot",
+"date": null,
+"daysBefore": null,
+"intervalInDays": null,
+"refersToTimespan": false,
+"code": "MapAggregator<GridCell, OSMEntitySnapshot> ___mapReducer2 = ___mapReducer;\n\nreturn Cast.result(\n___mapReducer2\n        .osmTag(\"natural\")\n        .sum()\n);\n" }

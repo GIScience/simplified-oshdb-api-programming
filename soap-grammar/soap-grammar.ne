@@ -53,6 +53,9 @@ directiveSOAPinner -> [^,\n]:+ {% (d, l, reject) => {
   const s = d[0].join('')
   let match
   if (s.startsWith(' ') || s.endsWith(' ')) return reject
+  if (s.startsWith('import ')) return {import: s.substr(7).trim()}
+  match = s.match(/@([a-z][a-zA-Z0-9]*) *: *([^\n]*)/)
+  if (match) return {parameterName: match[1], defaultValue: match[2]}
   if (s == 'snapshots') return {mapReducibleType: 'OSMEntitySnapshot'}
   if (s == 'contributions') return {mapReducibleType: 'OSMContribution'}
   if (s == 'now') return {date: 'now'}

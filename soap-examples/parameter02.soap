@@ -1,0 +1,5 @@
+// @typeOfStreet: tertiary //
+// @numberOf: 3 //
+osmTag("highway", @typeOfStreet)
+osmTag("natural", @numberOf)
+sum()

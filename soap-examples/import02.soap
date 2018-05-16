@@ -1,0 +1,4 @@
+// import user/measure //
+
+osmTag("natural")
+sum()
