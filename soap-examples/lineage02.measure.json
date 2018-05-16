@@ -2,7 +2,7 @@
 "warnings": [],
 "imports": [],
 "soapImports": [],
-"parameter": { "typeOfStreet": { "name": "typeOfStreet", "type": "String" } },
+"parameters": { "typeOfStreet": { "name": "typeOfStreet", "type": "String" } },
 "mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": 60,

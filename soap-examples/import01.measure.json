@@ -2,7 +2,7 @@
 "warnings": [],
 "imports": [ "abc.ghi", "abc.def" ],
 "soapImports": [],
-"parameter": [],
+"parameters": [],
 "mapReducibleType": "OSMContribution",
 "date": null,
 "daysBefore": null,

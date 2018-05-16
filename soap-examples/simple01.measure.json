@@ -2,7 +2,7 @@
 "warnings": [],
 "imports": [],
 "soapImports": [],
-"parameter": [],
+"parameters": [],
 "mapReducibleType": "OSMContribution",
 "date": null,
 "daysBefore": 90,

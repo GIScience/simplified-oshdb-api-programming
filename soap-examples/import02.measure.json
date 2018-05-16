@@ -2,7 +2,7 @@
 "warnings": [],
 "imports": [],
 "soapImports": [ "user/measure" ],
-"parameter": [],
+"parameters": [],
 "mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": null,
