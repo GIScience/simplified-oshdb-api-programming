@@ -8,6 +8,7 @@
       "type": "String",
       "defaultValue": "tertiary" },
    "numberOf": { "name": "numberOf", "type": "Integer", "defaultValue": "3" } },
+"parametersOverwriteForImport": {},
 "mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": null,

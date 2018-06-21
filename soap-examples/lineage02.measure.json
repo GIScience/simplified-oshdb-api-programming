@@ -3,6 +3,7 @@
 "imports": [],
 "soapImports": [],
 "parameters": { "typeOfStreet": { "name": "typeOfStreet", "type": "String" } },
+"parametersOverwriteForImport": {},
 "mapReducibleType": "OSMEntitySnapshot",
 "date": null,
 "daysBefore": 60,

@@ -107,6 +107,12 @@ const soapToMeasure = s => {
   filterAst(ast, 'soap-directive').filter(a => a.parameterName).filter(a => measure.parameters[a.parameterName] !== undefined).map(a => {
     measure.parameters[a.parameterName].defaultValue = a.defaultValue
   })
+  measure.parametersOverwriteForImport = {}
+  filterAst(ast, 'soap-directive').filter(a => a.parameterName).filter(a => measure.parameters[a.parameterName] === undefined).map(a => {
+    measure.parametersOverwriteForImport[a.parameterName] = {
+      defaultValue: a.defaultValue,
+    }
+  })
   measure.mapReducibleType = directive(ast, 'mapReducibleType', 'OSMEntitySnapshot')
   measure.date = directive(ast, 'date')
   measure.daysBefore = directive(ast, 'daysBefore')

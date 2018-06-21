@@ -1,0 +1,4 @@
+[ { "type": "soap-directive", "import": "Parameter Measure" },
+{ "type": "soap-directive",
+  "parameterName": "typeOfHighway",
+  "defaultValue": "primary" } ]

@@ -1,0 +1,12 @@
+{ "errors": [],
+"warnings": [],
+"imports": [],
+"soapImports": [ "Parameter Measure" ],
+"parameters": {},
+"parametersOverwriteForImport": { "typeOfHighway": { "defaultValue": "primary" } },
+"mapReducibleType": "OSMEntitySnapshot",
+"date": null,
+"daysBefore": null,
+"intervalInDays": null,
+"refersToTimespan": false,
+"code": "MapAggregator<GridCell, OSMEntitySnapshot> ___mapReducer2 = ___mapReducer;\n\nreturn Cast.result(\n___mapReducer2\n);\n" }

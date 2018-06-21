@@ -3,6 +3,7 @@
 "imports": [ "abc.ghi", "abc.def" ],
 "soapImports": [],
 "parameters": [],
+"parametersOverwriteForImport": {},
 "mapReducibleType": "OSMContribution",
 "date": null,
 "daysBefore": null,

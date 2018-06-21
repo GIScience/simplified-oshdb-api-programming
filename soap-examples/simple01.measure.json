@@ -3,6 +3,7 @@
 "imports": [],
 "soapImports": [],
 "parameters": [],
+"parametersOverwriteForImport": {},
 "mapReducibleType": "OSMContribution",
 "date": null,
 "daysBefore": 90,
