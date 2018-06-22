@@ -1,1 +1,4 @@
-[ { "repository": "github/giscience/osm-measures" } ]
+{ "errors": [],
+"warnings": [],
+"importGithub":
+ [ { "repository": "github/giscience/osm-measures" }]}
