@@ -1,3 +1,2 @@
 [ { "type": "soap-directive",
-"importGithub": "MeasureNumberOfPOIs",
 "repository": "github/giscience/osm-measures" } ]
