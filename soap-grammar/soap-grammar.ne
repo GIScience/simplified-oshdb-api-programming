@@ -53,6 +53,8 @@ directiveSOAPinner -> [^,\n]:+ {% (d, l, reject) => {
   const s = d[0].join('')
   let match
   if (s.startsWith(' ') || s.endsWith(' ')) return reject
+  match = s.match(/import +([a-zA-Z0-9]+) +from +(github\/[_\-a-zA-Z0-9\/]+)( *@([a-z0-9]+))?/)
+  if (match) return Object.assign({importGithub: match[1], repository: match[2]}, (match[4]) ? {version: match[4]} : {})
   if (s.startsWith('import ')) return {import: s.substr(7).trim()}
   match = s.match(/@([a-z][a-zA-Z0-9]*) *: *([^\n]*)/)
   if (match) return {parameterName: match[1], defaultValue: match[2]}
