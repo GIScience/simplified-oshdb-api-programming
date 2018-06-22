@@ -10,7 +10,7 @@ const pathExamples = 'soap-examples/'
 
 const parseToAst = s => new nearley.Parser(nearley.Grammar.fromCompiled(grammar)).feed(`${s.trim()}\n`).results[0]
 
-// console.log(soapToMeasure(fs.readFileSync(path.join(pathExamples, 'lineage02.soap'), 'utf-8')))
+console.log(soapToMeasure(fs.readFileSync(path.join(pathExamples, 'github-import01.soap'), 'utf-8')))
 
 describe('ast', () => {
   const filesJson = fs.readdirSync(pathExamples).filter(x => x.endsWith('.ast.json')).map(x => x.slice(0, -9))

@@ -94,6 +94,10 @@ const soapToMeasure = s => {
   const [ast, es] = parseToAst(s)
   if (es) return [ast, resultErrors(es)]
 
+  // import from github
+  const importGithub = filterAst(ast, 'soap-directive').filter(a => a.repository).map(a => Object.assign({repository: a.repository}, (a.version) ? {version: a.version} : {}))
+  if (importGithub.length > 0) return [ast, importGithub]
+
   // meta data
   measure.imports = filterAst(ast, 'import').map(a => a.content)
   measure.soapImports = filterAst(ast, 'soap-directive').filter(a => a.import).map(a => a.import)
