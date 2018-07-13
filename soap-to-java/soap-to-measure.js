@@ -115,6 +115,16 @@ const soapToMeasure = s => {
       type: c.parameterType,
     }
   }))
+  ast.filter(a => a.content).filter(a => Array.isArray(a.content)).map(a => a.content.filter(c => c.type === 'parameterOSMTag').map(c => {
+    measure.parameters['key'] = {
+      name: 'key',
+      type: 'String',
+    }
+    measure.parameters['value'] = {
+      name: 'value',
+      type: 'String',
+    }
+  }))
   filterAst(ast, 'soap-directive').filter(a => a.parameterName).filter(a => measure.parameters[a.parameterName] !== undefined).map(a => {
     measure.parameters[a.parameterName].defaultValue = a.defaultValue
   })
