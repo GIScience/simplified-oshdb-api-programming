@@ -1,0 +1,3 @@
+osmTag(@@osmTag)
+osmTag(@@osmTag("key", "value"))
+sum()

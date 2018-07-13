@@ -1,0 +1,9 @@
+[ { "type": "soap",
+  "command": "osmTag",
+  "content": [ { "type": "parameterOSMTag" } ] },
+{ "type": "soap",
+  "command": "osmTag",
+  "content":
+   [ { "type": "parameterOSMTagWithParameter" },
+     { "type": "java", "content": "(\"key\", \"value\")" } ] },
+{ "type": "soap", "command": "sum", "content": [] } ]

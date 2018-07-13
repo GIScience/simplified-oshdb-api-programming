@@ -12,6 +12,8 @@ const mooJava = moo.compile({
   java: {match: /[^@]+/, lineBreaks: true},
   parameterWithType: {match: /@[a-z][a-zA-Z0-9]*_[a-zA-Z]+/, value: x => x.slice(1).split('_')},
   parameter: {match: /@[a-z][a-zA-Z0-9]*/, value: x => x.slice(1)},
+  parameterOSMTagWithParameter: {match: /@@osmTag(?=\()/, value: x => x.slice(1)},
+  parameterOSMTag: {match: /@@osmTag/, value: x => x.slice(1)},
   illegalParameter: /@/,
 })
 const tokenizeJava = s => Array.from(mooJava.reset(s)).map(t => {
@@ -30,6 +32,10 @@ const tokenizeJava = s => Array.from(mooJava.reset(s)).map(t => {
       else if (['double'].includes(t.value[1].toLowerCase())) t.value[1] = 'Double'
       else if (['bool', 'boolean'].includes(t.value[1].toLowerCase())) t.value[1] = 'Boolean'
       return {type: 'parameter', parameterName: t.value[0], parameterType: t.value[1]}
+    case 'parameterOSMTagWithParameter':
+      return {type: 'parameterOSMTagWithParameter'}
+    case 'parameterOSMTag':
+      return {type: 'parameterOSMTag'}
     case 'illegalParameter':
       return {type: 'java', content: t.value}
   }
