@@ -9,4 +9,4 @@
 "daysBefore": null,
 "intervalInDays": null,
 "refersToTimespan": false,
-"code": "MapAggregator<GridCell, OSMEntitySnapshot> ___mapReducer2 = ___mapReducer;\n\nreturn Cast.result(\n___mapReducer2\n        .osmTag(p.getOSMTag())\n        .osmTag(p.getOSMTag(\"key\", \"value\"))\n        .sum()\n);\n" }
+"code": "MapAggregator<GridCell, OSMEntitySnapshot> ___mapReducer2 = ___mapReducer;\n\nreturn Cast.result(\n___mapReducer2\n        .osmTag(___p.getOSMTag())\n        .osmTag(___p.getOSMTag(\"key\", \"value\"))\n        .sum()\n);\n" }

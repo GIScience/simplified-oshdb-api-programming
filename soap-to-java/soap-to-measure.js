@@ -34,9 +34,9 @@ const contentToJava = c => {
     case 'parameter':
       return PARAMETER(c.parameterName, c.parameterType[0].toUpperCase() + c.parameterType.slice(1))
     case 'parameterOSMTagWithParameter':
-      return 'p.getOSMTag'
+      return '___p.getOSMTag'
     case 'parameterOSMTag':
-      return 'p.getOSMTag()'
+      return '___p.getOSMTag()'
   }
 }
 
