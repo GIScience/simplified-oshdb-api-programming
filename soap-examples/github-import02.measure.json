@@ -1,4 +1,4 @@
 { "errors": [],
 "warnings": [],
-"importGithub":
- [ { "repository": "github/giscience/osm-measures" }]}
+"importGithub": [ { "repository": "github/giscience/osm-measures" } ],
+"parameters": { "key": { "name": "key", "defaultValue": "" } } }

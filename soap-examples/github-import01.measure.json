@@ -1,5 +1,6 @@
 { "errors": [],
 "warnings": [],
+"parameters": [],
 "importGithub":
  [ { "repository": "github/giscience/osm-measures",
      "version": "bd4231a28e" }]}

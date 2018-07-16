@@ -1,2 +1,5 @@
 [ { "type": "soap-directive",
-"repository": "github/giscience/osm-measures" } ]
+  "parameterName": "key",
+  "defaultValue": "" },
+{ "type": "soap-directive",
+  "repository": "github/giscience/osm-measures" } ]
